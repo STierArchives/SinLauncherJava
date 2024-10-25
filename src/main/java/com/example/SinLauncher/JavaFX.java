@@ -27,7 +27,7 @@ public class JavaFX extends Application {
     private Scene scene;
 
     private String currentUserName = App.user.getUsername();
-    private String currentUserPassword = App.user.getEmail();
+    private String currentUserPassword = App.user.getPassword();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -73,12 +73,13 @@ public class JavaFX extends Application {
 
     private void loadProfilePage() {
         loadPage("/Pages/profile.html", "/css/profile.css");
-        
+
         webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
             if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
                 webEngine.executeScript("document.getElementById('username').innerText = '" + currentUserName + "';");
-                
-                webEngine.executeScript("document.getElementById('password').innerText = '" + currentUserPassword + "';");
+
+                webEngine.executeScript(
+                        "document.getElementById('password').innerText = '" + currentUserPassword + "';");
             }
         });
     }
@@ -86,12 +87,12 @@ public class JavaFX extends Application {
     private void loadPage(String page, String css) {
         webEngine.load(getClass().getResource(page).toExternalForm());
         webEngine.setUserStyleSheetLocation(getClass().getResource(css).toExternalForm());
-    
+
         webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 JSObject window = (JSObject) webEngine.executeScript("window");
 
-                window.setMember("JavaFXApp", this); 
+                window.setMember("JavaFXApp", this);
 
                 System.out.println("JavaFXApp object exposed to JavaScript");
             }
@@ -110,17 +111,17 @@ public class JavaFX extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    
+
         try {
             Accounts.addUser(App.user);
             Accounts.readAccounts().getUser(App.user.getUsername());
-            
+
             App.CONFIG.setUser(App.user.getUsername());
-            
+
             Accounts.removeUser(App.user.getUsername());
-    
+
             App.CONFIG.setUser(Accounts.readAccounts().getDefaultUser().getUsername());
-    
+
             App.launchingManager("MyInstallation");
         } catch (Accounts.NoSuchAccountException e) {
             System.err.println("No such account exists during user operation: " + e.getMessage());

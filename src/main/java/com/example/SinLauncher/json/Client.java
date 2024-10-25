@@ -298,14 +298,15 @@ public class Client {
                     String name = zipEntry.getName();
                     Path nameAsPath = Paths.get(name);
 
-                    // Excluding
-                    for (String exlude : this.extract.exclude) {
-                        if (nameAsPath.startsWith(exlude)) {
-                            zipEntry = nativeZip.getNextEntry();
-                            continue ziploop;
+                    if (this.extract != null) {
+                        // Excluding
+                        for (String exlude : this.extract.exclude) {
+                            if (nameAsPath.startsWith(exlude)) {
+                                zipEntry = nativeZip.getNextEntry();
+                                continue ziploop;
+                            }
                         }
                     }
-
                     File newFile = new File(nativeDestDir.toString(), name);
 
                     if (!newFile.exists()) {
