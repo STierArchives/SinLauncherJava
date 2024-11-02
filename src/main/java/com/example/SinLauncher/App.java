@@ -46,7 +46,7 @@ public class App {
 
     public static Config CONFIG;
 
-    static User user = new User("0", "SebSucks", "12345678", "Haxxers@gmail.com", true, true);
+    static User user = new User("0", "IliaSigma960", "12345678", "Haxxers@gmail.com", true, true);
 
     static {
         String os = System.getProperty("os.name").toLowerCase();
@@ -242,13 +242,12 @@ public class App {
 
             var cups = Java.getAvailableJavaCups();
 
-
             Accounts.addUser(user);
             Accounts.readAccounts().getUser(user.getUsername());
             
             CONFIG.setUser(user.getUsername());
 
-            intallationManager("test-with-keti", "1.21.1", cups, 0);
+            intallationManager("loldjieh", "1.21.1", cups, 0);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }

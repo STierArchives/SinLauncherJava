@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
           GameCard(
             gameVersion: '1.18',
             onLaunch: () {
-              Navigator.pushNamed(context, '/gameLauncher');
+              
             },
           ),
         ],

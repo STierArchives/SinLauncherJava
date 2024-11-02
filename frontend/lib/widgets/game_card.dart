@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class GameCard extends StatelessWidget {
   final String gameVersion;
@@ -9,6 +10,21 @@ class GameCard extends StatelessWidget {
     required this.gameVersion,
     required this.onLaunch,
   });
+ 
+  static const platform = MethodChannel('');
+
+  Future<void> installGame() async {
+    try {
+      await platform.invokeMethod('installationManager', {
+        'id': 'test-with-23234',
+        'version': '1.21.1',
+        'cups': 2, 
+        'count': 0
+      });
+    } on PlatformException catch (e) {
+      print("Failed to invoke: '${e.message}'.");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
