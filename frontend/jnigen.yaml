@@ -1,9 +1,0 @@
-output:
-  dart:
-    path: lib/example.dart
-    structure: single_file
-
-source_path:
-  - '../src/main/java/'
-classes:
-  - 'com.example.SinLauncher'
