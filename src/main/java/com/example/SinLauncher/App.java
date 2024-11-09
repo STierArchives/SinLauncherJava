@@ -18,7 +18,7 @@ import com.example.SinLauncher.SinLauncherEntites.Arch;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.SinLauncherEntites.Os;
 import com.example.SinLauncher.SinLauncherEntites.Instance.InstanceAlreadyExistsException;
-import com.example.SinLauncher.SinLauncherEntites.Instance.InvaildInstanceVersionException;
+import com.example.SinLauncher.SinLauncherEntites.Instance.InvalidInstanceVersionException;
 import com.example.SinLauncher.config.Config;
 import com.example.SinLauncher.config.Java;
 import com.example.SinLauncher.json.Accounts;
@@ -64,20 +64,20 @@ public class App {
 
         String arch = System.getProperty("os.arch").toLowerCase();
 
-        if (arch.equals("amd64"))
-            ARCH = Arch.X86_64;
-
-        else if (arch.equals("aarch64"))
-            ARCH = Arch.Arm64;
-
-        else if (arch.equals("arm"))
-            ARCH = Arch.Arm;
-
-        else if (arch.equals("x86"))
-            ARCH = Arch.X86;
-
-        else
-            ARCH = Arch.X86_64;
+        switch (arch) {
+            case "x86":
+                ARCH = Arch.X86;
+                break;
+            case "arm":
+                ARCH = Arch.Arm;
+                break;
+            case "aarch64":
+                ARCH = Arch.Arm64;
+                break;
+            default:
+                ARCH = Arch.X86_64;
+                break;
+        }
 
         ASSETS_DIR = Paths.get(DIR, "assets");
         LIBRARIES_DIR = Paths.get(DIR, "libraries");
@@ -104,9 +104,10 @@ public class App {
     }
 
     static void initializeLauncherDir() throws IOException {
+        Path dir = Paths.get(DIR);
 
-        if (!Files.exists(Paths.get(DIR)))
-            Files.createDirectories(Paths.get(DIR));
+        if (!Files.exists(dir))
+            Files.createDirectories(dir);
 
         if (!Files.exists(ASSETS_DIR))
             Files.createDirectories(ASSETS_DIR);
@@ -139,7 +140,7 @@ public class App {
         LOGGER.info("Launcher initialized!");
     }
 
-    public static void intallationManager(String installationName, String version, Java[] cups, int _cups_arg)
+    public static void installationManager(String installationName, String version, Java[] cups, int _cups_arg)
             throws IOException {
         try {
             Instance.createInstance(installationName, version);
@@ -155,7 +156,9 @@ public class App {
                     try {
                         LOGGER.info("Starting installation for instance: " + installationName);
 
-                        createdInstance.install();
+                        if (createdInstance != null) {
+                            createdInstance.install();
+                        }
 
                         LOGGER.info("Installation completed for instance: " + installationName);
 
@@ -203,34 +206,9 @@ public class App {
                 }
             });
 
-        } catch (InvaildInstanceVersionException e) {
+        } catch (InvalidInstanceVersionException e) {
             LOGGER.log(Level.SEVERE, "Invalid instance version: ", e);
         }
-    }
-
-    public static void launchingManager(String installationName) throws IOException {
-        Instance existingInstance = Instance.getInstance(installationName);
-
-        if (existingInstance != null) {
-            try {
-                existingInstance.launch();
-            } catch (IOException ___e) {
-                LOGGER.info(___e.getMessage());
-            }
-        }
-    }
-
-    public static void Debugging(String InstanceName) throws IOException {
-        System.out.println("Instances: ");
-
-        for (Instance instance : Instance.readInstances())
-            System.out.println(instance.toString());
-
-        Instance testInstance = Instance.getInstance(InstanceName);
-
-        Client client = testInstance.readClient();
-
-        System.out.println(GSON.toJson(client));
     }
 
     public static void main(String[] args) {
@@ -247,7 +225,7 @@ public class App {
             
             CONFIG.setUser(user.getUsername());
 
-            intallationManager("loldjieh", "1.21.1", cups, 0);
+            installationManager("newInstallationName", "1.21.1", cups, 0);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }

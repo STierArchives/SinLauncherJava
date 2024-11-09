@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import com.example.SinLauncher.App;
 import com.example.SinLauncher.config.Config;
@@ -36,10 +37,10 @@ public class Instance {
         }
     }
 
-    public static class InvaildInstanceVersionException extends Exception {
+    public static class InvalidInstanceVersionException extends Exception {
         public String version;
 
-        public InvaildInstanceVersionException(String message, String version) {
+        public InvalidInstanceVersionException(String message, String version) {
             super(message);
             this.version = version;
         }
@@ -68,12 +69,12 @@ public class Instance {
     }
 
     /**
-     * 
-     * creates a new vaild instance,
+     *
+     * creates a new valid instance,
      * creates it's folder, downloads it's client.json, serializes and appends it to
      * instances.json then returns it
-     * 
-     * @throws InvaildInstanceVersionException If manifest doesn't contain the
+     *
+     * @throws InvalidInstanceVersionException If manifest doesn't contain the
      *                                         provided {@code version}
      * @throws IOException                     it will fail to fetch client.json
      *                                         from
@@ -83,25 +84,28 @@ public class Instance {
 
     // FIXME: There is a bug in here which cause you to not see
     public static Instance createInstance(String name, String version)
-            throws InstanceAlreadyExistsException, InvaildInstanceVersionException, IOException {
+            throws InstanceAlreadyExistsException, InvalidInstanceVersionException, IOException {
         Instance instance = new Instance(name, version);
 
         Manifest manifest = Manifest.readManifest();
 
         String url = null;
-        for (Version man_version : manifest.versions) {
-            if (man_version.id.equals(version)) {
-                url = man_version.url;
+
+        for (Version manifest_version : manifest.versions) {
+            if (manifest_version.id.equals(version)) {
+                url = manifest_version.url;
+
                 break;
             }
         }
 
         if (url == null)
-            throw new InvaildInstanceVersionException(
-                    "Unexpected version occured while creating an instance '" + version + '\'',
+            throw new InvalidInstanceVersionException(
+                    "Unexpected version occurred while creating an instance: " + version + '\'',
                     version);
 
         instance.initDir();
+
         Path client_path = Paths.get(instance.Dir().toString(), "client.json");
 
         if (Files.exists(client_path))
@@ -115,22 +119,22 @@ public class Instance {
         else
             throw new IOException("Failed to fetch client.json for version '" + version + '\'');
 
+
         addInstance(instance);
+
         return instance;
     }
 
     /**
-     * @return reads instances.json, desrialize it and returns all the instances,
+     * @return reads instances.json, deserializes it and returns all the instances,
      *         returns null if there is no instances.json which should never happen
      *         expect if there is a problem with `App.init`
      */
     public static Instance[] readInstances() {
         try {
-            Instance[] instances = App.GSON.fromJson(Files.readString(INSTANCES_FILE), Instance[].class);
-
-            return instances;
+            return App.GSON.fromJson(Files.readString(INSTANCES_FILE), Instance[].class);
         } catch (IOException _e) {
-            return null;
+            return new Instance[0];
         }
     }
 
@@ -167,10 +171,11 @@ public class Instance {
      */
     public static void updateInstance(String name, Instance instance) throws InstanceNotFoundException, IOException {
         boolean found = false;
+
         Instance[] instances = readInstances();
 
         for (int i = 0; i < instances.length; i++) {
-            if (instances[i].name == name) {
+            if (Objects.equals(instances[i].name, name)) {
                 instances[i] = instance;
                 found = true;
                 break;
@@ -206,15 +211,16 @@ public class Instance {
     }
 
     /**
-     * reads client.json in {@link Dir} and desrializes it
+     * reads client.json in {@link this.Dir} and deserializes it
      */
     public Client readClient() throws IOException {
         return App.GSON.fromJson(Files.readString(Paths.get(this.Dir().toString(), "client.json")),
                 Client.class);
     }
 
+
     /**
-     * reads the instance config, desrializes it and returns it or simply returns
+     * reads the instance config, deserializes it and returns it or simply returns
      * {@code App.CONFIG}
      */
     public Config getConfig() throws IOException {
@@ -229,7 +235,7 @@ public class Instance {
 
     // Install and after the installation it attempts to launch this instance
     public void install() throws IOException {
-        this.readClient().download(this.Dir());
+            this.readClient().download(this.Dir());
     }
 
     public void launch() throws IOException {
