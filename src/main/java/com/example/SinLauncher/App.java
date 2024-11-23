@@ -225,7 +225,7 @@ public class App {
             
             CONFIG.setUser(user.getUsername());
 
-            installationManager("newInstallationName", "1.21.1", cups, 0);
+            installationManager("newInstallationName2", "1.21.1", cups, 0);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
