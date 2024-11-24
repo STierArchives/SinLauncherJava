@@ -23,6 +23,7 @@ public class User {
     @Id
     private String uuid;
 
+    @Getter
     private String username;
     private String password;
     private String email;
@@ -39,9 +40,5 @@ public class User {
         this.email = email;
         this.cracked = cracked;
         this.isLoggedIn = isLoggedIn;
-    }
-
-    public String getUsername() {
-        return this.username;
     }
 }

@@ -54,10 +54,12 @@ public class App {
         if (os.contains("win")) {
             DIR = System.getenv("APPDATA") + "\\SinLauncher";
             OS = Os.Windows;
-        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+        }
+        else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
             DIR = System.getProperty("user.home") + "/.sinlauncher";
             OS = Os.Linux;
-        } else {
+        }
+        else {
             DIR = "SinLauncher";
             OS = Os.Linux;
         }
@@ -86,7 +88,8 @@ public class App {
         try {
             App.initialize();
             CONFIG = Config.readMainConfig();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             LOGGER.info("Failed to initialize the Launcher. ERROR: " + e.getMessage());
             System.exit(1);
         }
@@ -122,12 +125,7 @@ public class App {
                 .asString();
 
         if (response.getStatus() == 200)
-            Files.write(
-                    Manifest.PATH,
-                    response
-                            .getBody()
-                            .getBytes());
-
+            Files.write(Manifest.PATH, response.getBody().getBytes());
         else {
             if (!Files.exists(Manifest.PATH))
                 throw new IOException("Failed to fetch Manifest.JSON; Response code: " + response.getStatus());
@@ -140,8 +138,7 @@ public class App {
         LOGGER.info("Launcher initialized!");
     }
 
-    public static void installationManager(String installationName, String version, Java[] cups, int _cups_arg)
-            throws IOException {
+    public static void installationManager(String installationName, String version, Java[] cups, int _cups_arg) throws IOException {
         try {
             Instance.createInstance(installationName, version);
 
@@ -223,7 +220,7 @@ public class App {
             Accounts.addUser(user);
             Accounts.readAccounts().getUser(user.getUsername());
             
-            CONFIG.setUser(user.getUsername());
+            CONFIG.setUsername(user.getUsername());
 
             installationManager("newInstallationName2", "1.21.1", cups, 0);
         } catch (Exception e) {

@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 import com.example.SinLauncher.App;
@@ -14,7 +15,7 @@ import com.example.SinLauncher.SinLauncherEntites.User;
 /**
  * Accounts
  * this is basically a json file containing all accounts it's path is in `path`
- * all setters must be static that peforms sets on readAccounts and writes them
+ * all setters must be static that performs sets on readAccounts and writes them
  * using writeAccounts
  */
 public class Accounts {
@@ -71,7 +72,8 @@ public class Accounts {
      */
     public static void removeUser(String username) throws IOException {
         Accounts accounts = readAccounts();
-        accounts.users.removeIf((x) -> x.getUsername() == username);
+
+        accounts.users.removeIf((x) -> Objects.equals(x.getUsername(), username));
     }
 
     /**
@@ -92,7 +94,7 @@ public class Accounts {
      * fetches an array of usernames in {@code this.users}}
      */
     public String[] getUsernames() {
-        List<String> usernames = new ArrayList<String>();
+        List<String> usernames = new ArrayList<>();
 
         for (User user : this.users)
             usernames.add(user.getUsername());
@@ -103,20 +105,24 @@ public class Accounts {
     public User getDefaultUser() {
         try {
             return this.getUser(this.defaultUser);
-        } catch (NoSuchAccountException _e) {
+        }
+        catch (NoSuchAccountException _e) {
             App.LOGGER.log(Level.SEVERE, "FAILED GETTING DEFAULT USER PANIC!");
+
             return null;
         }
     }
 
     /**
      * sets a {@code this.defaultUser} to {@code username}
-     * 
-     * @throws
+     *
+     * @throws NoSuchAccountException, IOException
      */
     public static void setDefaultUser(String username) throws NoSuchAccountException, IOException {
         Accounts accounts = readAccounts();
+
         User user = accounts.getUser(username);
+
         if (user == null)
             throw new NoSuchAccountException(username, "no such logged in account with username '" + username + "'");
 

@@ -88,7 +88,7 @@ public class Java {
                         iterator.remove();
                     }
                 } catch (IOException e) {
-                    iterator.remove(); // removing invaild cup
+                    iterator.remove(); // removing invalid cup
                 }
             }
         }
@@ -236,6 +236,7 @@ public class Java {
                 }
             }
         } catch (BackingStoreException _e) {
+            System.err.println("Backing store exception: " + _e);
         }
 
         return cups;

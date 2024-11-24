@@ -73,7 +73,7 @@ public class Client {
 
             if (os != null) {
                 if (os.name != null)
-                    match = match && os.name == App.OS;
+                    match = os.name == App.OS;
 
                 if (os.arch != null)
                     match = match && os.arch == App.ARCH;

@@ -15,11 +15,9 @@ import kong.unirest.core.Unirest;
 public class AssetIndex {
     public static class AssetObject {
         String hash;
-        int size;
 
         public String id() {
-            String id = new String(new char[] { this.hash.charAt(0), this.hash.charAt(1) });
-            return id;
+            return new String(new char[] { this.hash.charAt(0), this.hash.charAt(1) });
         }
 
         // Get the URL of the asset object

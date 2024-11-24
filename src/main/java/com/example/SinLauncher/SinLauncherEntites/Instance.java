@@ -51,6 +51,7 @@ public class Instance {
 
     public String name;
     public String version;
+
     public Path icon = null;
 
     public Instance(String name, String version) {
@@ -83,8 +84,7 @@ public class Instance {
      */
 
     // FIXME: There is a bug in here which cause you to not see
-    public static Instance createInstance(String name, String version)
-            throws InstanceAlreadyExistsException, InvalidInstanceVersionException, IOException {
+    public static Instance createInstance(String name, String version) throws InstanceAlreadyExistsException, InvalidInstanceVersionException, IOException {
         Instance instance = new Instance(name, version);
 
         Manifest manifest = Manifest.readManifest();
@@ -193,7 +193,7 @@ public class Instance {
      * appends serialized {@code new_instance} to instances.json
      */
     public static void addInstance(Instance new_instance) throws InstanceAlreadyExistsException, IOException {
-        List<Instance> instances = new ArrayList<Instance>(Arrays.asList(readInstances()));
+        List<Instance> instances = new ArrayList<>(Arrays.asList(readInstances()));
 
         for (Instance instance : instances) {
             if (instance.name.equals(new_instance.name)) {

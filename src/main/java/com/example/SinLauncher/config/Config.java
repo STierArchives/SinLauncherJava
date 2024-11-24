@@ -43,7 +43,7 @@ public class Config {
         this.writeConfig();
     }
 
-    /** retrives a Config from path */
+    /** retrieves a Config from path */
     public static Config getConfig(Path path) throws IOException {
         Config config = App.GSON.fromJson(Files.readString(path), Config.class);
         config.path = path.toString();
@@ -110,8 +110,12 @@ public class Config {
     }
 
     public void setUser(String username) throws IOException, NoSuchAccountException {
-        User user = Accounts.readAccounts().getUser(username);
-        this.user = user;
+        this.user = Accounts.readAccounts().getUser(username);
+        this.writeConfig();
+    }
+
+    public void setUsername(String username) throws IOException, NoSuchAccountException {
+        this.user.setUsername(username);
         this.writeConfig();
     }
 
@@ -133,18 +137,18 @@ public class Config {
         Client client = instance.readClient();
         Path[] paths = client.getLibrariesList();
 
-        String classpath = "";
+        StringBuilder classpath = new StringBuilder();
 
         for (Path path : paths) {
-            classpath += path;
+            classpath.append(path);
 
             if (App.OS == Os.Windows)
-                classpath += ';';
+                classpath.append(';');
             else
-                classpath += ':';
+                classpath.append(':');
         }
 
-        classpath += instance.Dir().resolve("client.jar");
+        classpath.append(instance.Dir().resolve("client.jar"));
 
         String mainClass = client.mainClass;
 
@@ -153,9 +157,9 @@ public class Config {
         ProcessBuilder javaProcess = new ProcessBuilder(
                 this.getJava().path,
                 "-Djava.library.path=" + instance.Dir().resolve(".natives"),
-                "-Xms" + Long.toString(this.getMinRam()) + "M",
-                "-Xmx" + Long.toString(this.getMaxRam()) + "M",
-                "-cp", classpath,
+                "-Xms" + this.getMinRam() + "M",
+                "-Xmx" + this.getMaxRam() + "M",
+                "-cp", classpath.toString(),
                 mainClass,
                 "--username", this.getUser().getUsername(),
                 "--gameDir", instance.Dir().toString(),
