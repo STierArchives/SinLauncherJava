@@ -1,4 +1,4 @@
-# SinLauncher
+# SinLauncher/SinusLauncher
 
 ![SinLauncher Logo](https://i.imgur.com/Wik03JZ.png)
 
