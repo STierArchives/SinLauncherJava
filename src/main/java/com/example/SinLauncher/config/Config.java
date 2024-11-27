@@ -32,7 +32,7 @@ public class Config {
     private Java java;
     private User user;
 
-    /** creates a new null config at path */
+    /* Creates a new null config at path */
     public Config(Path path) throws IOException {
         this.path = path.toString();
         this.max_ram = 0;
@@ -43,7 +43,7 @@ public class Config {
         this.writeConfig();
     }
 
-    /** retrieves a Config from path */
+    /* Retrieves a Config from path */
     public static Config getConfig(Path path) throws IOException {
         Config config = App.GSON.fromJson(Files.readString(path), Config.class);
         config.path = path.toString();

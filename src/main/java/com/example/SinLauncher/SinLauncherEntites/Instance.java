@@ -133,7 +133,8 @@ public class Instance {
     public static Instance[] readInstances() {
         try {
             return App.GSON.fromJson(Files.readString(INSTANCES_FILE), Instance[].class);
-        } catch (IOException _e) {
+        }
+        catch (IOException _e) {
             return new Instance[0];
         }
     }
@@ -155,6 +156,8 @@ public class Instance {
 
         return null;
     }
+
+
 
     /**
      * updates instances.json replacing all the instances with serialized

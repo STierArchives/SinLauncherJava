@@ -31,7 +31,7 @@ public class Accounts {
 
     public static final Path PATH = Paths.get(App.DIR, "accounts.json");
 
-    private String defaultUser;
+    private String defaultUsername;
     private List<User> users;
 
     public static Accounts readAccounts() throws IOException {
@@ -45,15 +45,16 @@ public class Accounts {
 
     private static void writeAccounts(Accounts accounts) throws IOException {
         var json = App.GSON.toJson(accounts).getBytes();
+
         Files.write(PATH, json);
     }
 
     public Accounts() {
         User defaultAccount = new User("0", "SebSucks", "", "", false, true);
 
-        this.users = new ArrayList<User>();
+        this.users = new ArrayList<>();
         this.users.add(defaultAccount);
-        this.defaultUser = defaultAccount.getUsername();
+        this.defaultUsername = defaultAccount.getUsername();
     }
 
     /**
@@ -104,7 +105,7 @@ public class Accounts {
 
     public User getDefaultUser() {
         try {
-            return this.getUser(this.defaultUser);
+            return this.getUser(this.defaultUsername);
         }
         catch (NoSuchAccountException _e) {
             App.LOGGER.log(Level.SEVERE, "FAILED GETTING DEFAULT USER PANIC!");
@@ -114,7 +115,7 @@ public class Accounts {
     }
 
     /**
-     * sets a {@code this.defaultUser} to {@code username}
+     * sets a {@code this.defaultUsername} to {@code username}
      *
      * @throws NoSuchAccountException, IOException
      */
@@ -124,8 +125,8 @@ public class Accounts {
         User user = accounts.getUser(username);
 
         if (user == null)
-            throw new NoSuchAccountException(username, "no such logged in account with username '" + username + "'");
+            throw new NoSuchAccountException(username, "No such logged in account with username '" + username + "'");
 
-        accounts.defaultUser = username;
+        accounts.defaultUsername = username;
     }
 }
