@@ -246,7 +246,7 @@ public class App {
 
             var cups = Java.getAvailableJavaCups();
 
-            installationManager("newInstallationName2", "1.21.4", cups, 0);
+            installationManager("installation1211", "1.21.1", cups, 0);
         }
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
