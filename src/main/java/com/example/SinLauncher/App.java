@@ -10,9 +10,6 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-import com.example.SinLauncher.SinLauncherEntites.User;
-
 import com.example.SinLauncher.SinLauncherEntites.Arch;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.SinLauncherEntites.Os;
@@ -27,7 +24,6 @@ import com.google.gson.GsonBuilder;
 
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
-import org.apache.commons.lang3.ObjectUtils;
 
 public class App {
     public static final Logger LOGGER = Logger.getLogger(App.class.getName());
