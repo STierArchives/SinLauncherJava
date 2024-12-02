@@ -5,7 +5,7 @@
   <version>1.0-SNAPSHOT</version>
   <name>sinlauncher</name>
   <!--  FIXME change it to the project's website  -->
-  <url>http://www.example.com</url>
+  <url>https://www.example.com</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
@@ -85,7 +85,7 @@
       <artifactId>reactor-core</artifactId>
     </dependency>
 
-    <!--  Dependency for encrpytion and security  -->
+    <!--  Dependency for encryption and security  -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
@@ -129,7 +129,7 @@
   </dependencies>
   <build>
     <pluginManagement>
-      <!--  lock down plugins versions to avoid using Maven defaults (may be moved to parent pom)  -->
+      <!--  lock down plugins versions to avoid using Maven defaults (could be moved to parent pom)  -->
       <plugins>
         <!--  clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle  -->
         <plugin>
@@ -210,6 +210,28 @@
         <version>3.0.5</version>
       </plugin>
 
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <mainClass>com.example.SinLauncher.App</mainClass>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
 
   </build>
