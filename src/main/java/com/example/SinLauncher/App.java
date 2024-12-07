@@ -140,7 +140,9 @@ public class App {
 
     public static void installationManager(String installationName, String version, Java[] cups, int _cups_arg) throws IOException {
         try (Scanner scanner = new Scanner(System.in)) {
-            if (Instance.getInstance(installationName) == null) {
+            Instance instance = Instance.getInstance(installationName);
+
+            if (instance == null ) {
                 Instance.createInstance(installationName, version);
 
                 Instance createdInstance = Instance.getInstance(installationName);
@@ -164,7 +166,8 @@ public class App {
                 } else {
                     System.out.println("Installation has been cancelled!");
                 }
-            } else {
+            }
+            else {
                 throw new InstanceAlreadyExistsException("The instance already exists", "InstanceAlreadyExistsException");
             }
         } catch (InstanceAlreadyExistsException e) {
@@ -215,7 +218,7 @@ public class App {
 
             var cups = Java.getAvailableJavaCups();
 
-            installationManager("testingInstallation", "1.21.1", cups, 0);
+            installationManager("testingInstallation1", "1.21.1", cups, 0);
         }
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);

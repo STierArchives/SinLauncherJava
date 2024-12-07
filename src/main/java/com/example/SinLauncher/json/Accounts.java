@@ -50,7 +50,7 @@ public class Accounts {
     }
 
     public Accounts() {
-        User defaultAccount = new User("0", "SebSucks", "", "", false, true);
+        User defaultAccount = new User("0", "IliaSigma960", "", "", false, true);
 
         this.users = new ArrayList<>();
         this.users.add(defaultAccount);
