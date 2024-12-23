@@ -132,9 +132,23 @@ public class Instance {
      */
     public static Instance[] readInstances() {
         try {
-            return App.GSON.fromJson(Files.readString(INSTANCES_FILE), Instance[].class);
-        }
-        catch (IOException _e) {
+            Instance[] instances = App.GSON.fromJson(Files.readString(INSTANCES_FILE), Instance[].class);
+
+            List<Instance> validInstances = new ArrayList<>();
+
+            for (Instance instance : instances) {
+                Path instancePath = PARENT_DIR.resolve(instance.name);
+
+                if (Files.exists(instancePath)) {
+                    validInstances.add(instance);
+                }
+            }
+
+            Files.writeString(INSTANCES_FILE, App.GSON.toJson(validInstances.toArray(new Instance[0])));
+
+            return validInstances.toArray(new Instance[0]);
+        } catch (IOException _e) {
+            System.out.println(_e.getMessage());
             return new Instance[0];
         }
     }

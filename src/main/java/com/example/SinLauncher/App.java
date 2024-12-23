@@ -192,7 +192,13 @@ public class App {
                 LOGGER.info("Setting Java configuration and launching instance: " + installationName);
 
                 instance.getConfig().setJava(cups[_cups_arg]);
+
+                LOGGER.info("Installing client.jar!");
+
                 instance.install();
+
+                LOGGER.info("Installation completed for instance: " + installationName);
+
                 instance.launch();
             }
 
@@ -218,7 +224,7 @@ public class App {
 
             var cups = Java.getAvailableJavaCups();
 
-            installationManager("testingInstallation1", "1.21.1", cups, 0);
+            installationManager("test", "1.21.1", cups, 0);
         }
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);

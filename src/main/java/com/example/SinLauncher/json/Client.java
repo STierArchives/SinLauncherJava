@@ -119,7 +119,10 @@ public class Client {
     public static class ArgumentDeserializer implements JsonDeserializer<Argument> {
 
         @Override
-        public Argument deserialize(JsonElement element, Type type, JsonDeserializationContext context)
+        public Argument deserialize(
+                JsonElement element,
+                Type type,
+                JsonDeserializationContext context)
                 throws JsonParseException {
             var argument = new Argument();
 
@@ -448,7 +451,7 @@ public class Client {
 
     // Gives a list of the required libraries paths in {@code App.LIBRARIES_DIR}
     public Path[] getLibrariesList() {
-        List<Path> pathList = new ArrayList<Path>();
+        List<Path> pathList = new ArrayList<>();
 
         for (Library library : libraries) {
             if (library.downloads.artifact != null) {

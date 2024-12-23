@@ -15,22 +15,18 @@ import org.springframework.context.annotation.Configuration;
 import com.example.SinLauncher.App;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.SinLauncherEntites.Os;
-import com.example.SinLauncher.SinLauncherEntites.User;
-import com.example.SinLauncher.json.Accounts;
 import com.example.SinLauncher.json.Client;
-import com.example.SinLauncher.json.Accounts.NoSuchAccountException;
 import com.sun.management.OperatingSystemMXBean;
 
 @Configuration
 public class Config {
     public static final Path MAIN_PATH = Paths.get(App.DIR, "config.json");
 
-    // String so Gson doesnt cry :(
+    // String so Gson doesn't cry :(
     private String path;
     private long min_ram;
     private long max_ram;
     private Java java;
-    private User user;
 
     /* Creates a new null config at path */
     public Config(Path path) throws IOException {
@@ -38,7 +34,6 @@ public class Config {
         this.max_ram = 0;
         this.min_ram = 0;
         this.java = null;
-        this.user = null;
 
         this.writeConfig();
     }
@@ -52,7 +47,7 @@ public class Config {
     }
 
     /** The default config */
-    private Config() throws IOException {
+    private Config() {
         OperatingSystemMXBean os = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
         long total = os.getTotalMemorySize();
 
@@ -60,7 +55,6 @@ public class Config {
         this.min_ram = this.max_ram / 2;
 
         this.java = Java.getAvailableJavaCups()[0];
-        this.user = Accounts.readAccounts().getDefaultUser();
         this.path = MAIN_PATH.toString();
     }
 
@@ -82,12 +76,6 @@ public class Config {
         return this.java;
     }
 
-    public User getUser() {
-        if (this.user == null)
-            return App.CONFIG.user;
-        return this.user;
-    }
-
     private void writeConfig() throws IOException {
         String json = App.GSON.toJson(this);
 
@@ -106,16 +94,6 @@ public class Config {
 
     public void setJava(Java java) throws IOException {
         this.java = java;
-        this.writeConfig();
-    }
-
-    public void setUser(String username) throws IOException, NoSuchAccountException {
-        this.user = Accounts.readAccounts().getUser(username);
-        this.writeConfig();
-    }
-
-    public void setUsername(String username) throws IOException, NoSuchAccountException {
-        this.user.setUsername(username);
         this.writeConfig();
     }
 
@@ -161,7 +139,8 @@ public class Config {
                 "-Xmx" + this.getMaxRam() + "M",
                 "-cp", classpath.toString(),
                 mainClass,
-                "--username", this.getUser().getUsername(),
+                "--username", "testUser",
+                "--skinURL", "https://live.staticflickr.com/65535/53083566002_ae3333d694.jpg",
                 "--gameDir", instance.Dir().toString(),
                 "--assetsDir", App.ASSETS_DIR.toString(),
                 "--assetIndex", client.assets,
@@ -177,7 +156,7 @@ public class Config {
         try {
             javaProcess.start().waitFor();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

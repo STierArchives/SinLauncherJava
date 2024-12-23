@@ -7,16 +7,4 @@
       <excludeFolder url="file://$MODULE_DIR$/frontend/build" />
     </content>
   </component>
-  <component name="FacetManager">
-    <facet type="jpa" name="JPA">
-      <configuration>
-        <setting name="validation-enabled" value="true" />
-        <setting name="provider-name" value="Hibernate" />
-        <datasource-mapping>
-          <factory-entry name="sinlauncher" value="72d3a027-169c-4c8e-81fa-163b08054ae5" />
-        </datasource-mapping>
-        <naming-strategy-map />
-      </configuration>
-    </facet>
-  </component>
 </module>

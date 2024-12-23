@@ -8,8 +8,8 @@
   <url>https://www.example.com</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
     <exec.mainClass>com.example.SinLauncher.App</exec.mainClass>
   </properties>
   <parent>
@@ -118,6 +118,7 @@
       <artifactId>postgresql</artifactId>
       <scope>runtime</scope>
     </dependency>
+
       <dependency>
           <groupId>org.jetbrains</groupId>
           <artifactId>annotations</artifactId>

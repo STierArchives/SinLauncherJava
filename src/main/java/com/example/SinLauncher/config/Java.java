@@ -35,11 +35,9 @@ public class Java {
         switch (App.OS) {
             case Windows -> cups.addAll(getCommonWindowsCups());
             case Linux -> cups.addAll(getCommonLinuxCups());
-            default -> {
-            }
         }
 
-        cups.addAll(getPATHCups());
+        cups.addAll(getCupsPath());
 
         if (App.OS == Os.Windows) {
             // Check registry
@@ -53,23 +51,27 @@ public class Java {
             cups.addAll(jdks);
         }
 
-        // putting versions in cups with no version
+        // Putting versions inside the cups without any versions!
         Iterator<Java> iterator = cups.iterator();
+
         while (iterator.hasNext()) {
             Java cup = iterator.next();
+
             if (cup.version == null) {
                 ProcessBuilder processBuilder = new ProcessBuilder(cup.path, "-version");
                 processBuilder.redirectErrorStream(true);
 
                 try {
-                    StringBuilder result = new StringBuilder();
                     Process process = processBuilder.start();
+                    StringBuilder result = new StringBuilder();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
                     String line;
+
                     while ((line = reader.readLine()) != null) {
                         result.append(line);
                     }
+
                     process.destroy();
 
                     // getting version from output using regex
@@ -78,17 +80,20 @@ public class Java {
 
                     if (matcher.find()) {
                         String version = matcher.group(1);
+
                         if (matcher.group(2) != null) {
                             version += "_";
                             version += matcher.group(2);
                         }
 
                         cup.version = version;
-                    } else {
+                    }
+                    else {
                         iterator.remove();
                     }
-                } catch (IOException e) {
-                    iterator.remove(); // removing invalid cup
+                }
+                catch (IOException e) {
+                    iterator.remove(); // If it catches an error it will remove the invalid cup!
                 }
             }
         }
@@ -103,10 +108,11 @@ public class Java {
     }
 
     private static int compareVersions(String version1, String version2) {
-        String[] v1 = version1.split(".");
-        String[] v2 = version2.split(".");
+        String[] v1 = version1.split("\\.");
+        String[] v2 = version2.split("\\.");
 
         int length = Math.max(v1.length, v2.length);
+
         for (int i = 0; i < length; i++) {
             int num1 = i < v1.length ? Integer.parseInt(v1[i]) : 0;
             int num2 = i < v2.length ? Integer.parseInt(v2[i]) : 0;
@@ -115,7 +121,8 @@ public class Java {
                 return Integer.compare(num1, num2);
             }
         }
-        return 0; // equal
+
+        return 0; 
     }
 
     public static Java getJavaHomeCup() {
@@ -147,6 +154,7 @@ public class Java {
                 new File("/usr/lib64/jvm"),
                 new File("/usr/lib32/jvm"),
         };
+
         return getCupsInDirs(directories);
     }
 
@@ -195,7 +203,7 @@ public class Java {
         }
     }
 
-    private static List<Java> getPATHCups() {
+    private static List<Java> getCupsPath() {
         List<Java> cups = new ArrayList<>();
 
         // Check PATH environment variable
@@ -219,6 +227,7 @@ public class Java {
 
     private static List<Java> getRegCups(Preferences node) {
         List<Java> cups = new ArrayList<>();
+
         try {
             String[] children = node.childrenNames();
 
@@ -235,7 +244,8 @@ public class Java {
                         cups.add(new Java(null, javaPath.toString()));
                 }
             }
-        } catch (BackingStoreException _e) {
+        }
+        catch (BackingStoreException _e) {
             System.err.println("Backing store exception: " + _e);
         }
 

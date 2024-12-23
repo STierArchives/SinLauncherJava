@@ -17,7 +17,9 @@ public class AssetIndex {
         String hash;
 
         public String id() {
-            return new String(new char[] { this.hash.charAt(0), this.hash.charAt(1) });
+            return new String(new char[] {
+                    this.hash.charAt(0), this.hash.charAt(1)
+            });
         }
 
         // Get the URL of the asset object
@@ -27,7 +29,12 @@ public class AssetIndex {
 
         // Gets the Path of the asset
         public Path path() {
-            return Paths.get(App.ASSETS_DIR.toString(), "objects", this.id(), hash);
+            return Paths.get(
+                    App.ASSETS_DIR.toString(),
+                    "objects",
+                    this.id(),
+                    hash
+            );
         }
 
         // Downloads an asset object and puts it in {@code this.path()}
