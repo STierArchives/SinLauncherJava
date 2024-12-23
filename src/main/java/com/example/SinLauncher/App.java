@@ -217,11 +217,6 @@ public class App {
 
     public static void main(String[] args) {
         try {
-            Manifest manifest = Manifest.readManifest();
-
-            System.out.println("Max Ram: " + CONFIG.getMaxRam());
-            System.out.println("Latest Minecraft Version: " + manifest.latest.release);
-
             var cups = Java.getAvailableJavaCups();
 
             installationManager("test", "1.21.1", cups, 0);
